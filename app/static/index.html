@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudAura RAG — Ask My Docs</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header class="hero">
+        <div class="container">
+            <h1>Ask My Docs</h1>
+            <p class="subtitle">Production RAG with hybrid retrieval, cross-encoder reranking, and citation enforcement</p>
+            <div class="badges">
+                <span class="badge">BM25 + Vector</span>
+                <span class="badge">Cross-Encoder Reranking</span>
+                <span class="badge">Cited Answers</span>
+                <span class="badge">Fully Local</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Ask Section -->
+        <section id="ask" class="section">
+            <h2>Ask a Question</h2>
+            <form id="ask-form">
+                <div class="input-group">
+                    <textarea id="question" placeholder="e.g. What are the three pillars of observability?" rows="3" minlength="3" maxlength="2000" required></textarea>
+                    <button type="submit" id="ask-btn">Ask</button>
+                </div>
+                <div class="options-row">
+                    <label>Top K: <input type="number" id="top-k" value="5" min="1" max="20"></label>
+                </div>
+            </form>
+
+            <div id="answer-panel" class="answer-panel hidden">
+                <div class="answer-header">
+                    <h3>Answer</h3>
+                    <div class="answer-meta">
+                        <span id="answer-model" class="meta-tag"></span>
+                        <span id="answer-method" class="meta-tag"></span>
+                        <span id="answer-latency" class="meta-tag"></span>
+                    </div>
+                </div>
+                <div id="answer-text" class="answer-text"></div>
+                <div id="citations" class="citations">
+                    <h4>Sources</h4>
+                    <div id="citation-list"></div>
+                </div>
+            </div>
+
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+                <p>Retrieving and generating answer…</p>
+            </div>
+
+            <div id="error-panel" class="error-panel hidden"></div>
+        </section>
+
+        <!-- Architecture Section -->
+        <section id="architecture" class="section">
+            <h2>How It Works</h2>
+            <div class="pipeline">
+                <div class="pipeline-step">
+                    <div class="step-number">1</div>
+                    <h3>Chunking</h3>
+                    <p>Documents split into overlapping chunks (512 tokens, 64 overlap) using recursive character splitting</p>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">
+                    <div class="step-number">2</div>
+                    <h3>Dual Index</h3>
+                    <p>BM25 index for keyword matching + ChromaDB vector store for semantic search</p>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">
+                    <div class="step-number">3</div>
+                    <h3>Hybrid Retrieval</h3>
+                    <p>Reciprocal Rank Fusion merges BM25 and vector results into a unified ranking</p>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">
+                    <div class="step-number">4</div>
+                    <h3>Reranking</h3>
+                    <p>Cross-encoder (ms-marco-MiniLM) rescores candidates for precision</p>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">
+                    <div class="step-number">5</div>
+                    <h3>Generation</h3>
+                    <p>Ollama LLM generates an answer with enforced citations from source chunks</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section id="stats" class="section">
+            <h2>System Status</h2>
+            <div class="stats-grid" id="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-docs">—</div>
+                    <div class="stat-label">Documents</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-chunks">—</div>
+                    <div class="stat-label">Chunks</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-embed">—</div>
+                    <div class="stat-label">Embedding Model</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-reranker">—</div>
+                    <div class="stat-label">Reranker</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-llm">—</div>
+                    <div class="stat-label">LLM</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-health">—</div>
+                    <div class="stat-label">Health</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Section -->
+        <section id="comparison" class="section">
+            <h2>Retrieval Approach Comparison</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Approach</th>
+                            <th>Strength</th>
+                            <th>Weakness</th>
+                            <th>Used Here</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>BM25 (Keyword)</td>
+                            <td>Exact term matching, fast, no model needed</td>
+                            <td>Misses synonyms and semantic meaning</td>
+                            <td class="check">✓</td>
+                        </tr>
+                        <tr>
+                            <td>Vector Search (Semantic)</td>
+                            <td>Understands meaning, handles paraphrasing</td>
+                            <td>Can miss exact terms, embedding quality dependent</td>
+                            <td class="check">✓</td>
+                        </tr>
+                        <tr>
+                            <td>Hybrid (RRF)</td>
+                            <td>Best of both — keyword precision + semantic recall</td>
+                            <td>Slightly higher latency from dual retrieval</td>
+                            <td class="check">✓</td>
+                        </tr>
+                        <tr>
+                            <td>Cross-Encoder Reranking</td>
+                            <td>High-precision reordering of candidates</td>
+                            <td>Slower than bi-encoder, runs on top-N only</td>
+                            <td class="check">✓</td>
+                        </tr>
+                        <tr>
+                            <td>Naive RAG (embed + retrieve)</td>
+                            <td>Simple to implement</td>
+                            <td>Lower recall, no precision refinement</td>
+                            <td class="cross">✗</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Tech Stack -->
+        <section id="stack" class="section">
+            <h2>Technology Stack</h2>
+            <div class="stack-grid">
+                <div class="stack-card">
+                    <h3>Embeddings</h3>
+                    <p>all-MiniLM-L6-v2</p>
+                    <span class="stack-tag">Local</span>
+                </div>
+                <div class="stack-card">
+                    <h3>Vector Store</h3>
+                    <p>ChromaDB</p>
+                    <span class="stack-tag">Persistent</span>
+                </div>
+                <div class="stack-card">
+                    <h3>Keyword Search</h3>
+                    <p>BM25Okapi</p>
+                    <span class="stack-tag">In-Memory</span>
+                </div>
+                <div class="stack-card">
+                    <h3>Reranker</h3>
+                    <p>ms-marco-MiniLM-L-6-v2</p>
+                    <span class="stack-tag">Cross-Encoder</span>
+                </div>
+                <div class="stack-card">
+                    <h3>LLM</h3>
+                    <p>Ollama (phi3:mini)</p>
+                    <span class="stack-tag">Local</span>
+                </div>
+                <div class="stack-card">
+                    <h3>Framework</h3>
+                    <p>FastAPI</p>
+                    <span class="stack-tag">Async</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>CloudAura RAG — Production Hybrid Retrieval System</p>
+        </div>
+    </footer>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
