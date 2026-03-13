@@ -24,15 +24,31 @@ async function loadStats() {
 
 async function loadHealth() {
   const el = document.getElementById("stat-health");
+  const dot = document.getElementById("status-dot");
+  const label = document.getElementById("status-label");
   try {
     const res = await fetch("/health");
     if (!res.ok) throw new Error();
     const data = await res.json();
-    el.textContent = data.status === "healthy" ? "Healthy" : "Degraded";
-    el.style.color = data.ollama_connected ? "var(--green)" : "var(--yellow)";
+    const healthy = data.status === "healthy";
+    const ollamaUp = data.ollama_connected;
+
+    el.textContent = healthy ? "Healthy" : "Degraded";
+    el.style.color = ollamaUp ? "var(--green)" : "var(--yellow)";
+
+    if (dot) dot.className = "status-dot " + (ollamaUp ? "online" : "degraded");
+    if (label) {
+      label.textContent = ollamaUp ? "Online" : "Degraded";
+      label.style.color = ollamaUp ? "var(--green)" : "var(--yellow)";
+    }
   } catch {
     el.textContent = "Offline";
     el.style.color = "var(--red)";
+    if (dot) dot.className = "status-dot offline";
+    if (label) {
+      label.textContent = "Offline";
+      label.style.color = "var(--red)";
+    }
   }
 }
 
