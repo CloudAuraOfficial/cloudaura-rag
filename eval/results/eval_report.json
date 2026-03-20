@@ -1,0 +1,170 @@
+{
+  "timestamp": "2026-03-20T05:37:55Z",
+  "num_questions": 8,
+  "metrics": {
+    "error": "The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable"
+  },
+  "avg_latency_ms": 61282.8,
+  "per_question": [
+    {
+      "question": "What are the three pillars of observability?",
+      "ground_truth": "The three pillars of observability are metrics, logs, and traces.",
+      "answer": "The three pillars of observability are Metrics, Logs, and Tracing. Metrics are numerical measurements collected at regular intervals, ideal for dashboards and trend analysis [Source: observability-guide.md, 7ad929a0d729]. Logs are records of events and activities within the system, providing insights into the system's behavior and issues [Source: observability-guide.md, 7ad929a0d729]. Tracing is the ability to track requests as they move through the system, helping to pinpoint issues and understand system performance [Source: observability-guide.md, 7ad929a0d729].",
+      "latency_ms": 104992.4,
+      "retrieval": {
+        "model": "phi3:mini",
+        "method": "hybrid (BM25 + vector + cross-encoder rerank)",
+        "api_latency_ms": 102433.5,
+        "total_latency_ms": 104992.36178398132,
+        "num_citations": 5,
+        "source_docs": [
+          "observability-guide.md",
+          "kubernetes-basics.md",
+          "kubernetes-basics.md",
+          "kubernetes-basics.md",
+          "kubernetes-basics.md"
+        ]
+      }
+    },
+    {
+      "question": "What is the difference between a Counter and a Gauge metric?",
+      "ground_truth": "A Counter is a monotonically increasing value that can only go up or reset to zero, while a Gauge is a value that can go up or down.",
+      "answer": "A Counter metric is a monotonically increasing value that can only go up or reset to zero, as stated in [Source: observability-guide.md, 207e114c7194]. In contrast, a Gauge metric is a value that can go up or down, representing current states like memory usage or active connections, as mentioned in [Source: observability-guide.md, 207e114c7194] and [Source: observability-guide.md, 7ad929a0d729].",
+      "latency_ms": 49878.9,
+      "retrieval": {
+        "model": "phi3:mini",
+        "method": "hybrid (BM25 + vector + cross-encoder rerank)",
+        "api_latency_ms": 49142.5,
+        "total_latency_ms": 49878.89623641968,
+        "num_citations": 5,
+        "source_docs": [
+          "observability-guide.md",
+          "observability-guide.md",
+          "observability-guide.md",
+          "observability-guide.md",
+          "observability-guide.md"
+        ]
+      }
+    },
+    {
+      "question": "What are the benefits of multi-stage Docker builds?",
+      "ground_truth": "Benefits include smaller images (often 10-100x reduction), reduced attack surface (no build tools in production), faster pulls and deployments, and cleaner separation of concerns.",
+      "answer": "- Smaller images (often 10-100x reduction) [Source: docker-best-practices.md, b5887d61838e]\n- Reduced attack surface (no build tools in production) [Source: docker-best01234567890]\n- Faster pulls and deployments [Source: docker-best-practices.md, b5887d61838e]\n- Cleaner separation of concerns [Source: docker-best-practices.md, b5887d61838e] [Source: docker-best-practices.md, aba7c135bfb0]\n- Optimized layer caching [Source: docker-best-practices.md, bce72a9c9e8f]",
+      "latency_ms": 59508.8,
+      "retrieval": {
+        "model": "phi3:mini",
+        "method": "hybrid (BM25 + vector + cross-encoder rerank)",
+        "api_latency_ms": 58972.8,
+        "total_latency_ms": 59508.811473846436,
+        "num_citations": 5,
+        "source_docs": [
+          "docker-best-practices.md",
+          "docker-best-practices.md",
+          "docker-best-practices.md",
+          "docker-best-practices.md",
+          "docker-best-practices.md"
+        ]
+      }
+    },
+    {
+      "question": "What is the role of etcd in Kubernetes?",
+      "ground_truth": "etcd is a consistent, distributed key-value store used as Kubernetes' backing store for all cluster data. It stores the desired state of the cluster, including configuration, secrets, and service discovery information, and uses the Raft consensus algorithm.",
+      "answer": "Etcd serves as Kubernetes' backing store for all cluster data, storing the desired state of the cluster, including configuration, secrets, and service discovery information. It uses the Raft consensus algorithm for leader election and data replication. [Source: kubernetes-basics.md, a40e4ba9bce4] [Source: kubernetes-basics.md, 9f3d086cc754] [Source: kubernetes-basics.md, d51f3d3a66b1] [Source: kubernetes-basics.md, 375161361c12] [Source: kubernetes-basics.md, f362b16ed8e6]",
+      "latency_ms": 46430.7,
+      "retrieval": {
+        "model": "phi3:mini",
+        "method": "hybrid (BM25 + vector + cross-encoder rerank)",
+        "api_latency_ms": 45890.1,
+        "total_latency_ms": 46430.69648742676,
+        "num_citations": 5,
+        "source_docs": [
+          "kubernetes-basics.md",
+          "kubernetes-basics.md",
+          "kubernetes-basics.md",
+          "kubernetes-basics.md",
+          "kubernetes-basics.md"
+        ]
+      }
+    },
+    {
+      "question": "What Kubernetes Service types are available?",
+      "ground_truth": "Kubernetes Service types are ClusterIP (internal only, default), NodePort (exposes on each node's IP at a static port 30000-32767), LoadBalancer (exposes externally via cloud provider), and ExternalName (maps to a DNS name via CNAME).",
+      "answer": "I don't have enough information in the provided documents to answer this question.",
+      "latency_ms": 23970.1,
+      "retrieval": {
+        "model": "phi3:mini",
+        "method": "hybrid (BM25 + vector + cross-encoder rerank)",
+        "api_latency_ms": 23380.4,
+        "total_latency_ms": 23970.100164413452,
+        "num_citations": 5,
+        "source_docs": [
+          "kubernetes-basics.md",
+          "kubernetes-basics.md",
+          "kubernetes-basics.md",
+          "kubernetes-basics.md",
+          "kubernetes-basics.md"
+        ]
+      }
+    },
+    {
+      "question": "How should secrets be managed in Docker containers?",
+      "ground_truth": "Secrets should never be hardcoded in Dockerfiles, stored in docker-compose.yml environment variables committed to git, or included in image layers. Instead use Docker Secrets, runtime environment variables from a secrets manager, volume-mounted secret files, or external secrets managers like HashiCorp Vault.",
+      "answer": "Secrets should never be:\n- Hardcoded in Dockerfiles or application code [Source: docker-best-practices.md, 2909ec2ab211]\n- Stored in environment variables in docker-compose.yml committed to git [Source: docker-best-practices.md, 2909ec2ab211]\n- Included in image layers [Source: docker-best-practices.md, 2909ec2ab211]\n\nInstead, use:\n- Docker Secrets in Swarm mode [Source: docker-best-practices.md, 2909ec2ab211]\n- Environment variables injected at runtime from a secrets manager [Source: docker-best-practices.md, 2909ec2ab211]\n- Volume-mounted secret files [Source: docker-best-practices.md, 2909ec2ab211]\n- External secrets managers like HashiCorp Vault or AWS Secrets Manager [Source: docker-best-practices.md, 2909ec2ab211]\n\nI don't have enough information in the provided documents to answer this question.",
+      "latency_ms": 80910.6,
+      "retrieval": {
+        "model": "phi3:mini",
+        "method": "hybrid (BM25 + vector + cross-encoder rerank)",
+        "api_latency_ms": 80382.9,
+        "total_latency_ms": 80910.640001297,
+        "num_citations": 5,
+        "source_docs": [
+          "docker-best-practices.md",
+          "docker-best-practices.md",
+          "docker-best-practices.md",
+          "docker-best-practices.md",
+          "kubernetes-basics.md"
+        ]
+      }
+    },
+    {
+      "question": "What is an error budget and how is it calculated?",
+      "ground_truth": "Error budget equals 1 minus the SLO. For a 99.9% availability SLO, the 30-day error budget is 0.1% which equals 43.2 minutes of downtime. When the budget is consumed, reliability should be prioritized over features.",
+      "answer": "An error budget is the allowable amount of downt0ime or service degradation, calculated as 1 minus the Service Level Objective (SLO). For example, with a 99.9% SLO, the error budget is 0.1%, which equates to 43.2 minutes of downtime over a 30-day period. This concept is crucial for prioritizing reliability over new features when the budget is consumed. [Source: observability-guide.md, d46254d98071] [Source: observability-guide.md, ebca132141b1] [Source: observability-guide.md, 845a09dd9ad8] [Source: observability-guide.md, 0e67a5b6d466]",
+      "latency_ms": 68278.5,
+      "retrieval": {
+        "model": "phi3:mini",
+        "method": "hybrid (BM25 + vector + cross-encoder rerank)",
+        "api_latency_ms": 67325.3,
+        "total_latency_ms": 68278.52392196655,
+        "num_citations": 5,
+        "source_docs": [
+          "observability-guide.md",
+          "observability-guide.md",
+          "observability-guide.md",
+          "observability-guide.md",
+          "kubernetes-basics.md"
+        ]
+      }
+    },
+    {
+      "question": "What is the RED method for service monitoring?",
+      "ground_truth": "The RED method stands for Rate (requests per second), Errors (failed requests per second), and Duration (distribution of request latencies). It is used for monitoring services.",
+      "answer": "The RED method for service monitoring includes the following metrics:\n- Rate: Number of requests per second [Source: observability-guide.md, 0e67a5b6d466]\n- Errors: Number of failed requests per second [Source: observability-guide.md, 0e67a5b6d466]\n- Duration: Distribution of request latencies [Source: observability-guide.md, 0e67a5b6d466]\n\nI don't have enough information in the provided documents to answer questions about the USE method for resource monitoring or the specifics of the SLOs and Error Budgets.",
+      "latency_ms": 56292.3,
+      "retrieval": {
+        "model": "phi3:mini",
+        "method": "hybrid (BM25 + vector + cross-encoder rerank)",
+        "api_latency_ms": 55803.2,
+        "total_latency_ms": 56292.27805137634,
+        "num_citations": 5,
+        "source_docs": [
+          "observability-guide.md",
+          "observability-guide.md",
+          "kubernetes-basics.md",
+          "observability-guide.md",
+          "kubernetes-basics.md"
+        ]
+      }
+    }
+  ]
+}
