@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudAura RAG — P3 Quality</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="grain"></div>
+
+<nav class="topbar">
+    <div class="topbar-inner">
+        <a href="/" class="logo">
+            <span class="logo-mark">CA</span>
+            <span class="logo-divider"></span>
+            <span class="logo-text">RAG Patterns — P3 Quality</span>
+        </a>
+        <div class="topbar-status">
+            <span class="status-dot" id="status-dot"></span>
+            <span class="status-label" id="status-label">Checking…</span>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-inner">
+        <p class="hero-label">Pattern 5 · Adaptive RAG &nbsp;&middot;&nbsp; Pattern 6 · Corrective RAG</p>
+        <h1>Quality-Driven <em>Retrieval</em></h1>
+        <p class="hero-desc">
+            Queries are classified and routed to the optimal retrieval strategy.
+            A quality checker evaluates results and triggers corrective retry loops
+            when relevance is below threshold.
+        </p>
+        <div class="hero-tags">
+            <span class="tag">Query Classification</span>
+            <span class="tag">Adaptive Routing</span>
+            <span class="tag">Quality Scoring</span>
+            <span class="tag">Corrective Retry</span>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-inner">
+        <p class="section-label">01 · Query Interface</p>
+
+        <div class="mode-selector">
+            <label class="mode-option">
+                <input type="radio" name="mode" value="adaptive" checked>
+                <span class="mode-label">Adaptive</span>
+            </label>
+            <label class="mode-option">
+                <input type="radio" name="mode" value="corrective">
+                <span class="mode-label">Corrective</span>
+            </label>
+            <label class="mode-option">
+                <input type="radio" name="mode" value="both">
+                <span class="mode-label">Both</span>
+            </label>
+        </div>
+
+        <div class="query-layout">
+            <form class="query-form" id="ask-form">
+                <div class="input-wrap">
+                    <textarea id="question" rows="3" placeholder="Ask a question — the system will classify and route it…" required></textarea>
+                </div>
+                <div class="input-footer">
+                    <button type="submit" id="ask-btn">
+                        <span>Analyze & Answer</span>
+                        <span class="btn-arrow">→</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <div class="loading-bar"></div>
+            <p>Classifying query and retrieving…</p>
+        </div>
+
+        <div id="error-panel" class="error-panel hidden"></div>
+
+        <!-- Decision Flow Visualization -->
+        <div id="flow-panel" class="flow-panel hidden">
+            <p class="section-label" style="margin-top:32px">Decision Flow</p>
+            <div class="flow-steps" id="flow-steps"></div>
+        </div>
+
+        <!-- Answer Panel -->
+        <div id="answer-panel" class="answer-panel hidden">
+            <div class="answer-meta-bar">
+                <span class="meta-chip" id="answer-model"></span>
+                <span class="meta-chip" id="answer-latency"></span>
+                <span class="meta-chip accent" id="answer-route"></span>
+            </div>
+            <div class="answer-body">
+                <p class="answer-label">Answer</p>
+                <div class="answer-text" id="answer-text"></div>
+            </div>
+            <div class="citations-section" id="citations-section">
+                <p class="citations-label">Sources</p>
+                <div class="citation-grid" id="citation-list"></div>
+            </div>
+        </div>
+
+        <!-- Quality Gauge -->
+        <div id="quality-panel" class="quality-panel hidden">
+            <p class="section-label" style="margin-top:32px">Quality Assessment</p>
+            <div class="quality-gauge">
+                <div class="gauge-bar">
+                    <div class="gauge-fill" id="gauge-fill"></div>
+                </div>
+                <div class="gauge-info">
+                    <span class="gauge-score" id="gauge-score">—</span>
+                    <span class="gauge-status" id="gauge-status">—</span>
+                </div>
+                <p class="gauge-details" id="gauge-details"></p>
+            </div>
+        </div>
+
+        <!-- Corrections Log -->
+        <div id="corrections-panel" class="corrections-panel hidden">
+            <p class="section-label" style="margin-top:24px">Correction Rounds</p>
+            <div id="corrections-list" class="corrections-list"></div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="section-inner">
+        <div class="footer-content">
+            <span class="footer-brand">CloudAura</span>
+            <span class="footer-sep">·</span>
+            <span>RAG Patterns Showcase — P3 Quality</span>
+        </div>
+    </div>
+</footer>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
