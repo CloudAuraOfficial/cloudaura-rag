@@ -1,10 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
   loadStats();
   loadHealth();
+  setupP5Link();
 
   const form = document.getElementById("ask-form");
   form.addEventListener("submit", handleAsk);
 });
+
+function setupP5Link() {
+  // Resolve P5 URL relative to current host
+  const host = window.location.hostname;
+  const protocol = window.location.protocol;
+  const p5Host = host.replace(/^ragdocs\./, "rag-graph.");
+  const p5Link = document.getElementById("p5-link");
+  if (p5Link) {
+    p5Link.href = protocol + "//" + p5Host;
+  }
+}
 
 async function loadStats() {
   try {

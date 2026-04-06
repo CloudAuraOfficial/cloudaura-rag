@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudAura RAG — Ask My Docs</title>
+    <title>CloudAura RAG — 10 Patterns Showcase</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -16,15 +16,15 @@
     <nav class="topbar">
         <div class="topbar-inner">
             <a href="/" class="logo">
-                <span class="logo-mark">RAG</span>
+                <span class="logo-mark">CA</span>
                 <span class="logo-divider"></span>
-                <span class="logo-text">Ask My Docs</span>
+                <span class="logo-text">RAG Patterns Showcase</span>
             </a>
             <div class="topbar-links">
+                <a href="#showcase">Patterns</a>
                 <a href="#query">Query</a>
                 <a href="#pipeline">Pipeline</a>
                 <a href="#system">System</a>
-                <a href="#methods">Methods</a>
             </div>
             <div class="topbar-status">
                 <span class="status-dot" id="status-dot"></span>
@@ -32,6 +32,77 @@
             </div>
         </div>
     </nav>
+
+    <!-- Showcase Gateway -->
+    <section id="showcase" class="showcase">
+        <div class="showcase-inner">
+            <p class="showcase-label">CloudAura Engineering Portfolio</p>
+            <h1 class="showcase-title">10 RAG <em>Patterns</em></h1>
+            <p class="showcase-desc">
+                A progressive showcase of retrieval-augmented generation — from simple hybrid search
+                to knowledge graph traversal. Five sub-projects, one shared library, fully local inference.
+            </p>
+            <div class="showcase-grid">
+                <a href="#query" class="showcase-card live">
+                    <div class="card-badge">Live Demo</div>
+                    <div class="card-label">P1 Foundations</div>
+                    <h3>Simple RAG + HyDE</h3>
+                    <p>Hybrid retrieval with BM25 + vector search, cross-encoder reranking, and citation enforcement.</p>
+                    <div class="card-tags">
+                        <span>BM25</span><span>ChromaDB</span><span>Reranking</span><span>Citations</span>
+                    </div>
+                    <div class="card-port">Port 8001</div>
+                </a>
+                <div class="showcase-card source">
+                    <div class="card-badge">Source Only</div>
+                    <div class="card-label">P2 Conversational</div>
+                    <h3>Memory + Branched RAG</h3>
+                    <p>Conversation history augments retrieval. Complex queries decompose into parallel sub-questions.</p>
+                    <div class="card-tags">
+                        <span>Sessions</span><span>Decomposition</span><span>Parallel Retrieval</span>
+                    </div>
+                    <div class="card-port">43 tests passing</div>
+                </div>
+                <div class="showcase-card source">
+                    <div class="card-badge">Source Only</div>
+                    <div class="card-label">P3 Quality</div>
+                    <h3>Adaptive + Corrective RAG</h3>
+                    <p>Queries classified and routed. Quality checker triggers corrective retry loops on low relevance.</p>
+                    <div class="card-tags">
+                        <span>Classification</span><span>Routing</span><span>Quality Scoring</span>
+                    </div>
+                    <div class="card-port">31 tests passing</div>
+                </div>
+                <div class="showcase-card source">
+                    <div class="card-badge">Source Only</div>
+                    <div class="card-label">P4 Autonomous</div>
+                    <h3>Self-RAG + Agentic RAG</h3>
+                    <p>System grades its own retrieval, self-critiques answers, and orchestrates multi-tool agent workflows.</p>
+                    <div class="card-tags">
+                        <span>Relevance Grading</span><span>Self-Critique</span><span>Tool Planning</span>
+                    </div>
+                    <div class="card-port">46 tests passing</div>
+                </div>
+                <a href="" class="showcase-card live" id="p5-link">
+                    <div class="card-badge">Live Demo</div>
+                    <div class="card-label">P5 Advanced</div>
+                    <h3>Graph + Multimodal RAG</h3>
+                    <p>LightRAG knowledge graph with entity extraction, multi-hop traversal, d3.js visualization, and 5 query modes.</p>
+                    <div class="card-tags">
+                        <span>Knowledge Graph</span><span>d3.js</span><span>5 Query Modes</span>
+                    </div>
+                    <div class="card-port">Port 8015</div>
+                </a>
+            </div>
+            <div class="showcase-stats">
+                <div class="showcase-stat"><strong>10</strong> RAG patterns</div>
+                <div class="showcase-stat"><strong>5</strong> sub-projects</div>
+                <div class="showcase-stat"><strong>195</strong> tests passing</div>
+                <div class="showcase-stat"><strong>1</strong> shared library</div>
+                <div class="showcase-stat"><strong>0</strong> external APIs</div>
+            </div>
+        </div>
+    </section>
 
     <header class="hero">
         <div class="hero-inner">

@@ -765,6 +765,180 @@ body {
     opacity: 0.5;
 }
 
+/* ── Showcase Gateway ──────────────────────────── */
+.showcase {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 0 64px;
+}
+
+.showcase-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 32px;
+}
+
+.showcase-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 20px;
+}
+
+.showcase-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2.6rem, 6vw, 4rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 16px;
+}
+
+.showcase-title em {
+    font-style: italic;
+    color: var(--amber);
+}
+
+.showcase-desc {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-2);
+    max-width: 600px;
+    margin-bottom: 40px;
+}
+
+.showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 40px;
+}
+
+.showcase-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+}
+
+.showcase-card.live {
+    cursor: pointer;
+    border-color: rgba(212, 162, 69, 0.3);
+}
+
+.showcase-card.live:hover {
+    border-color: var(--amber);
+    transform: translateY(-2px);
+}
+
+.showcase-card.source {
+    opacity: 0.65;
+}
+
+.card-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.showcase-card.live .card-badge {
+    background: rgba(92, 184, 122, 0.12);
+    color: var(--green);
+    border: 1px solid rgba(92, 184, 122, 0.25);
+}
+
+.showcase-card.source .card-badge {
+    background: var(--bg-input);
+    color: var(--text-3);
+    border: 1px solid var(--border);
+}
+
+.card-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 6px;
+}
+
+.showcase-card h3 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.showcase-card p {
+    font-size: 0.82rem;
+    color: var(--text-2);
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 10px;
+}
+
+.card-tags span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.03em;
+    padding: 2px 7px;
+    border: 1px solid var(--border-light);
+    border-radius: 3px;
+    color: var(--text-3);
+}
+
+.card-port {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-3);
+    letter-spacing: 0.04em;
+}
+
+.showcase-stats {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.showcase-stat {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-3);
+    letter-spacing: 0.02em;
+}
+
+.showcase-stat strong {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-right: 4px;
+}
+
+@media (max-width: 640px) {
+    .showcase { padding: 56px 0 48px; }
+    .showcase-inner { padding: 0 16px; }
+    .showcase-grid { grid-template-columns: 1fr; }
+    .showcase-stats { flex-direction: column; gap: 8px; }
+}
+
 /* ── Footer ─────────────────────────────────────── */
 .footer {
     border-top: 1px solid var(--border);
