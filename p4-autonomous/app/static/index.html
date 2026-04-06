@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudAura RAG — P4 Autonomous</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="grain"></div>
+
+<nav class="topbar">
+    <div class="topbar-inner">
+        <a href="/" class="logo">
+            <span class="logo-mark">CA</span>
+            <span class="logo-divider"></span>
+            <span class="logo-text">RAG Patterns — P4 Autonomous</span>
+        </a>
+        <div class="topbar-status">
+            <span class="status-dot" id="status-dot"></span>
+            <span class="status-label" id="status-label">Checking…</span>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-inner">
+        <p class="hero-label">Pattern 7 · Self-RAG &nbsp;&middot;&nbsp; Pattern 8 · Agentic RAG</p>
+        <h1>Autonomous <em>Retrieval</em></h1>
+        <p class="hero-desc">
+            The system grades its own retrieval quality, filters irrelevant chunks,
+            self-critiques generated answers, and orchestrates multi-tool agent workflows
+            to autonomously answer complex questions.
+        </p>
+        <div class="hero-tags">
+            <span class="tag">Relevance Grading</span>
+            <span class="tag">Self-Critique</span>
+            <span class="tag">Tool Orchestration</span>
+            <span class="tag">Agent Planning</span>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-inner">
+        <p class="section-label">01 · Query Interface</p>
+
+        <div class="mode-selector">
+            <label class="mode-option">
+                <input type="radio" name="mode" value="self_rag" checked>
+                <span class="mode-label">Self-RAG</span>
+            </label>
+            <label class="mode-option">
+                <input type="radio" name="mode" value="agentic">
+                <span class="mode-label">Agentic</span>
+            </label>
+            <label class="mode-option">
+                <input type="radio" name="mode" value="both">
+                <span class="mode-label">Both</span>
+            </label>
+        </div>
+
+        <div class="query-layout">
+            <form class="query-form" id="ask-form">
+                <div class="input-wrap">
+                    <textarea id="question" rows="3" placeholder="Ask a question — the system will autonomously decide how to answer…" required></textarea>
+                </div>
+                <div class="input-footer">
+                    <button type="submit" id="ask-btn">
+                        <span>Execute</span>
+                        <span class="btn-arrow">→</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <div class="loading-bar"></div>
+            <p>Planning and executing…</p>
+        </div>
+
+        <div id="error-panel" class="error-panel hidden"></div>
+
+        <!-- Relevance Grades -->
+        <div id="grades-panel" class="grades-panel hidden">
+            <p class="section-label" style="margin-top:32px">Relevance Grades</p>
+            <div class="grades-summary" id="grades-summary"></div>
+            <div class="grades-list" id="grades-list"></div>
+        </div>
+
+        <!-- Answer Panel -->
+        <div id="answer-panel" class="answer-panel hidden">
+            <div class="answer-meta-bar">
+                <span class="meta-chip" id="answer-model"></span>
+                <span class="meta-chip" id="answer-latency"></span>
+                <span class="meta-chip accent" id="answer-method"></span>
+            </div>
+            <div class="answer-body">
+                <p class="answer-label">Answer</p>
+                <div class="answer-text" id="answer-text"></div>
+            </div>
+            <div class="citations-section" id="citations-section">
+                <p class="citations-label">Sources</p>
+                <div class="citation-grid" id="citation-list"></div>
+            </div>
+        </div>
+
+        <!-- Self-Critique -->
+        <div id="critique-panel" class="critique-panel hidden">
+            <p class="section-label" style="margin-top:32px">Self-Critique</p>
+            <div class="critique-card" id="critique-card"></div>
+        </div>
+
+        <!-- Agent Steps -->
+        <div id="steps-panel" class="steps-panel hidden">
+            <p class="section-label" style="margin-top:32px">Agent Execution Trace</p>
+            <div class="steps-list" id="steps-list"></div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="section-inner">
+        <div class="footer-content">
+            <span class="footer-brand">CloudAura</span>
+            <span class="footer-sep">·</span>
+            <span>RAG Patterns Showcase — P4 Autonomous</span>
+        </div>
+    </div>
+</footer>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
