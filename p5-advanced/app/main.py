@@ -19,6 +19,9 @@ import structlog
 logger = structlog.get_logger()
 
 
+LEVEL_MAP = {"debug": 10, "info": 20, "warning": 30, "error": 40, "critical": 50}
+
+
 def setup_logging(level: str = "info") -> None:
     structlog.configure(
         processors=[
@@ -30,7 +33,7 @@ def setup_logging(level: str = "info") -> None:
             structlog.processors.JSONRenderer(),
         ],
         wrapper_class=structlog.make_filtering_bound_logger(
-            structlog.get_level_from_name(level)
+            LEVEL_MAP.get(level.lower(), 20)
         ),
         context_class=dict,
         logger_factory=structlog.PrintLoggerFactory(),
