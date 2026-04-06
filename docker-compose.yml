@@ -1,4 +1,5 @@
 services:
+  # ── Shared Ollama Instance ──────────────────────
   ollama:
     image: ollama/ollama:latest
     container_name: rag-ollama
@@ -14,9 +15,13 @@ services:
       start_period: 15s
     restart: unless-stopped
 
-  app:
-    build: .
-    container_name: rag-app
+  # ── RAG-P1 Foundations (port 8001) ──────────────
+  # Patterns: Simple RAG + HyDE
+  rag-p1:
+    build:
+      context: .
+      dockerfile: p1-foundations/Dockerfile
+    container_name: rag-p1-foundations
     ports:
       - "127.0.0.1:8001:8001"
     environment:
@@ -31,7 +36,7 @@ services:
       - RERANK_TOP_K=${RERANK_TOP_K:-5}
       - LOG_LEVEL=${LOG_LEVEL:-info}
     volumes:
-      - chroma_data:/app/chroma_data
+      - p1_chroma:/app/chroma_data
       - model_cache:/app/model_cache
     depends_on:
       ollama:
@@ -44,7 +49,128 @@ services:
       start_period: 120s
     restart: unless-stopped
 
+  # ── RAG-P2 Conversational (port 8012) ──────────
+  # Patterns: Memory RAG + Branched RAG
+  rag-p2:
+    build:
+      context: .
+      dockerfile: p2-conversational/Dockerfile
+    container_name: rag-p2-conversational
+    ports:
+      - "127.0.0.1:8012:8012"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - LLM_MODEL=${LLM_MODEL:-phi3:mini}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-all-MiniLM-L6-v2}
+      - RERANKER_MODEL=${RERANKER_MODEL:-cross-encoder/ms-marco-MiniLM-L-6-v2}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    volumes:
+      - p2_chroma:/app/chroma_data
+      - model_cache:/app/model_cache
+    depends_on:
+      ollama:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; httpx.get('http://localhost:8012/health', timeout=5).raise_for_status()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    restart: unless-stopped
+
+  # ── RAG-P3 Quality (port 8013) ─────────────────
+  # Patterns: Adaptive RAG + Corrective RAG
+  rag-p3:
+    build:
+      context: .
+      dockerfile: p3-quality/Dockerfile
+    container_name: rag-p3-quality
+    ports:
+      - "127.0.0.1:8013:8013"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - LLM_MODEL=${LLM_MODEL:-phi3:mini}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-all-MiniLM-L6-v2}
+      - RERANKER_MODEL=${RERANKER_MODEL:-cross-encoder/ms-marco-MiniLM-L-6-v2}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    volumes:
+      - p3_chroma:/app/chroma_data
+      - model_cache:/app/model_cache
+    depends_on:
+      ollama:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; httpx.get('http://localhost:8013/health', timeout=5).raise_for_status()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    restart: unless-stopped
+
+  # ── RAG-P4 Autonomous (port 8014) ──────────────
+  # Patterns: Self-RAG + Agentic RAG
+  rag-p4:
+    build:
+      context: .
+      dockerfile: p4-autonomous/Dockerfile
+    container_name: rag-p4-autonomous
+    ports:
+      - "127.0.0.1:8014:8014"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - LLM_MODEL=${LLM_MODEL:-phi3:mini}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-all-MiniLM-L6-v2}
+      - RERANKER_MODEL=${RERANKER_MODEL:-cross-encoder/ms-marco-MiniLM-L-6-v2}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    volumes:
+      - p4_chroma:/app/chroma_data
+      - model_cache:/app/model_cache
+    depends_on:
+      ollama:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; httpx.get('http://localhost:8014/health', timeout=5).raise_for_status()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    restart: unless-stopped
+
+  # ── RAG-P5 Advanced (port 8015) ────────────────
+  # Patterns: Multimodal RAG + Graph RAG (LightRAG)
+  rag-p5:
+    build:
+      context: .
+      dockerfile: p5-advanced/Dockerfile
+    container_name: rag-p5-advanced
+    ports:
+      - "127.0.0.1:8015:8015"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - LLM_MODEL=${LLM_MODEL:-phi3:mini}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-all-MiniLM-L6-v2}
+      - LIGHTRAG_EMBEDDING_MODEL=${LIGHTRAG_EMBEDDING_MODEL:-nomic-embed-text:latest}
+      - DEMO_MODE=${DEMO_MODE:-true}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    volumes:
+      - p5_lightrag:/app/lightrag_data
+      - model_cache:/app/model_cache
+    depends_on:
+      ollama:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; httpx.get('http://localhost:8015/health', timeout=5).raise_for_status()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    restart: unless-stopped
+
 volumes:
   ollama_data:
-  chroma_data:
   model_cache:
+  p1_chroma:
+  p2_chroma:
+  p3_chroma:
+  p4_chroma:
+  p5_lightrag:
