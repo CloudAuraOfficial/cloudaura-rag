@@ -85,15 +85,21 @@ class GraphExporter:
         )
 
     def get_graph(self, lightrag_wrapper=None) -> GraphData:
-        """Get graph data — precomputed in demo mode, live otherwise."""
+        """Get graph data — live if available, precomputed fallback otherwise."""
         if self._demo_mode and self._precomputed_graph:
             return self._precomputed_graph
 
         if lightrag_wrapper and lightrag_wrapper.is_initialized:
             raw = lightrag_wrapper.get_graph()
-            return self.export_live(raw)
+            live = self.export_live(raw)
+            if live.node_count > 0:
+                return live
 
-        # Fallback: empty graph
+        # Fallback to precomputed if live graph is empty
+        if self._precomputed_graph:
+            logger.info("falling_back_to_precomputed", reason="live_graph_empty")
+            return self._precomputed_graph
+
         return GraphData(
             nodes=[], links=[], source="empty",
             node_count=0, edge_count=0,
