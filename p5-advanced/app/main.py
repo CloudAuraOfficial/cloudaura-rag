@@ -1,5 +1,6 @@
 """RAG-P5 Advanced — Multimodal + Graph RAG with LightRAG."""
 
+import asyncio
 import os
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -41,6 +42,31 @@ def setup_logging(level: str = "info") -> None:
     )
 
 
+async def _background_ingest(lightrag: LightRAGWrapper, corpus_dir: str) -> None:
+    """Ingest corpus files in background after server starts."""
+    corpus_path = Path(corpus_dir)
+    if not corpus_path.exists():
+        return
+
+    raw_graph = lightrag.get_graph()
+    if raw_graph.get("nodes"):
+        logger.info("graph_already_populated", node_count=len(raw_graph["nodes"]))
+        return
+
+    files = sorted(corpus_path.glob("**/*.md")) + sorted(corpus_path.glob("**/*.txt"))
+    total = len(files)
+    for i, f in enumerate(files, 1):
+        content = f.read_text(encoding="utf-8")
+        if content.strip():
+            logger.info("corpus_ingesting", file=f.name, progress=f"{i}/{total}")
+            success = await lightrag.ingest(content)
+            if success:
+                logger.info("corpus_ingested", file=f.name, progress=f"{i}/{total}")
+            else:
+                logger.error("corpus_ingest_failed", file=f.name)
+    logger.info("corpus_ingest_complete", total=total)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     setup_logging(settings.log_level)
@@ -67,18 +93,6 @@ async def lifespan(app: FastAPI):
         model=settings.llm_model,
     )
 
-    # Auto-ingest corpus if LightRAG initialized and graph is empty
-    if lightrag.is_initialized:
-        raw_graph = lightrag.get_graph()
-        if not raw_graph.get("nodes"):
-            corpus_dir = Path(settings.corpus_dir)
-            if corpus_dir.exists():
-                for f in sorted(corpus_dir.glob("**/*.md")) + sorted(corpus_dir.glob("**/*.txt")):
-                    content = f.read_text(encoding="utf-8")
-                    if content.strip():
-                        await lightrag.ingest(content)
-                        logger.info("corpus_ingested", file=f.name)
-
     app.state.settings = settings
     app.state.lightrag = lightrag
     app.state.graph_exporter = graph_exporter
@@ -91,7 +105,17 @@ async def lifespan(app: FastAPI):
         precomputed_available=graph_exporter.has_precomputed,
     )
 
+    # Auto-ingest corpus in background (doesn't block startup)
+    ingest_task = None
+    if lightrag.is_initialized:
+        ingest_task = asyncio.create_task(
+            _background_ingest(lightrag, settings.corpus_dir)
+        )
+
     yield
+
+    if ingest_task and not ingest_task.done():
+        ingest_task.cancel()
 
 
 app = FastAPI(
