@@ -32,6 +32,23 @@ async def ask_question(request: Request, body: GraphAskRequest) -> GraphAskRespo
                     context=None,
                 )
 
+        # Demo mode but query not cached — return guidance instead of 503
+        if not lightrag.is_initialized:
+            available = [e.get("question", "") for e in cached]
+            elapsed = (time.perf_counter() - start) * 1000
+            return GraphAskResponse(
+                question=body.question,
+                answer=(
+                    "This is a demo instance with pre-computed knowledge graph queries. "
+                    "Try one of the available questions, or select a different query mode. "
+                    f"Available queries: {'; '.join(available)}"
+                ),
+                mode=body.mode,
+                model="demo",
+                latency_ms=round(elapsed, 1),
+                context=None,
+            )
+
     # Live query via LightRAG
     if not lightrag.is_initialized:
         raise HTTPException(
