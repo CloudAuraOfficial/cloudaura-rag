@@ -2,7 +2,9 @@ FROM python:3.12-slim AS builder
 
 WORKDIR /build
 COPY requirements.txt .
-RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt \
+    && find /install -type d -name "tests" -exec rm -rf {} + 2>/dev/null || true \
+    && find /install -name "*.pyc" -delete 2>/dev/null || true
 
 FROM python:3.12-slim
 

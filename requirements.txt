@@ -5,9 +5,10 @@ pydantic==2.10.4
 pydantic-settings==2.7.1
 structlog==24.4.0
 
-# Embeddings & reranking
-sentence-transformers==3.3.1
+# Embeddings & reranking (CPU-only torch — no NVIDIA/CUDA on VPS)
+--extra-index-url https://download.pytorch.org/whl/cpu
 torch>=2.1.0
+sentence-transformers==3.3.1
 
 # Vector store
 chromadb==0.5.23
@@ -19,13 +20,5 @@ rank-bm25==0.2.2
 langchain-text-splitters==0.3.4
 python-multipart==0.0.20
 
-# Evaluation
-ragas==0.2.8
-datasets>=3.0.0
-
 # Prometheus metrics
 prometheus-fastapi-instrumentator==7.0.2
-
-# Testing
-pytest==8.3.4
-pytest-asyncio==0.25.0
